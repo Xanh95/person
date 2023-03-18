@@ -30,7 +30,7 @@
     color: red
 }
 body {
-    background-image: url("/person/img/login_background.jpg");
+    background-image: url("../img/login_background.jpg");
     background-size: 100%;
     background-position: center;
 }

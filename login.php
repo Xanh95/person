@@ -1,9 +1,12 @@
+<?php 
+  
+?>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Register</title>	
+	<title>Login</title>	
   <!-- Import Bootstrap and JQuery -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -12,8 +15,8 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>   
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <!-- My CSS and JQuery -->
-  <link href="css/register.css" rel="stylesheet">
-  <script type="text/javascript" src="js/register.js" defer></script> 
+  <link href="css/login.css" rel="stylesheet">
+  <script type="text/javascript" src="js/login.js" defer></script> 
 </head>
 <body>
   <div class="container-fluid">
@@ -28,24 +31,7 @@
             </div>
             <div class="col-md-6 col-sm-12 col-xs-12 form bg-r">
                 <form id="login">
-                  <h3>Đăng Ký</h3>
-                  <div>
-                    <label for="name">Tên của bạn:</label>
-                    <input type="text" class="form-control" id="name" placeholder="Enter name" name="name">
-                  </div>
-                  <div>
-                    <label for="phone">Số điện thoại:</label>
-                    <input type="text" class="form-control" id="phone" placeholder="Enter phone" name="phone">
-                  </div>
-                  <div>
-                    <label for="birthday">Ngày tháng nắm sinh:</label>
-                    <input type="text" class="form-control" id="birthday" placeholder="tháng/ngày/năm" name="birthday">
-                  </div>
-                  <div >
-                    <label for="address">Địa chỉ:</label>
-                    <input type="text" class="form-control" id="address" placeholder="Enter address" name="address">
-                   
-                  </div>
+                  <h3>Đăng Nhập</h3>
                   <div >
                     <label for="email">Email address</label>
                     <input type="text" class="form-control" id="email" placeholder="Enter email" name="email">
@@ -54,20 +40,13 @@
                   <div >
                     <label for="password" class="label">Password</label>
                     <input type="password" class="form-control" id="password" placeholder="Password" name="password">            
-                  </div>
-                  <div >
-                    <label for="repassword" class="label">RePassword</label>
-                    <input type="password" class="form-control" id="repassword" placeholder="RePassword" name="repassword">            
-                  </div>
-                  <div >
-                    <label for="avatar" class="label">avatar</label>
-                    <input type="file"  id="avatar" name="avatar">            
+                   
                   </div>
                   <div class="form-check">
                     <input type="checkbox" class="form-check-input" id="rememberMe" name="isrobot">
                     <label class="form-check-label" for="rememberMe"  id="isrobot">Tôi không phải Robot</label>
                   </div>   
-                  <button type="submit" class="btn btn-success btn-block my-3">Register</button>
+                  <button type="submit" class="btn btn-success btn-block my-3">Login</button>
                 </form>
             </div>
         </div>

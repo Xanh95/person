@@ -1,3 +1,39 @@
+<?php 
+  echo '<pre>'; 
+  print_r($_POST);
+  print_r($_FILES);
+  echo '</pre>'; 
+if (isset($_POST['submit'])) {
+    $avatar = $_FILES['avatar'];
+    $error = false;
+    if ($avatar['error'] == 0 ) {
+        $extension = pathinfo($avatar['name'], PATHINFO_EXTENSION);
+        $extension = strtolower($extension);
+        $allowed = ['png', 'jpg', 'jpeg', 'gif'];
+        if (!in_array($extension, $allowed)) {
+            $error = true;
+        }
+        $size_b = $avatar['size'];
+        $size_mb = $size_b/ 1024 / 1024;
+        if ($size_mb > 2) {
+            $error = true;
+        }
+    }
+    if (!$error) {
+        $filename = '';
+        if ($avatar['error'] == 0) {
+            $dir_upload = 'upload';
+            if (!file_exists($dir_upload)) {
+                mkdir($dir_upload);
+            }
+            $filename = time() . '-' . $avatar['name'];
+            $is_upload = move_uploaded_file($avatar['tmp_name'],"$dir_upload/$filename");
+            echo "<img src='$dir_upload/$filename' height='50px' >";
+        }
+    }
+
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,7 +63,7 @@
                 </div>
             </div>
             <div class="col-md-6 col-sm-12 col-xs-12 form bg-r">
-                <form id="login">
+                <form id="login" method="post" enctype="multipart/form-data">
                   <h3>Đăng Ký</h3>
                   <div>
                     <label for="name">Tên của bạn:</label>
@@ -67,7 +103,7 @@
                     <input type="checkbox" class="form-check-input" id="rememberMe" name="isrobot">
                     <label class="form-check-label" for="rememberMe"  id="isrobot">Tôi không phải Robot</label>
                   </div>   
-                  <button type="submit" class="btn btn-success btn-block my-3">Register</button>
+                  <button type="submit" class="btn btn-success btn-block my-3" name="submit" value="tải lên">Register</button>
                 </form>
             </div>
         </div>
