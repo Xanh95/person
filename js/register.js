@@ -17,7 +17,7 @@ $("#register").validate({
       required: true,
       minlength: 3,
     },
-    isrobot: {
+    gender: {
       required: true,
     },
     username: {
@@ -50,8 +50,8 @@ $("#register").validate({
       required: "chưa nhập mật khẩu",
       minlength: "mật khẩu ít nhất 3 ký tự",
     },
-    isrobot: {
-      required: "chưa xác nhận không phải robot",
+    gender: {
+      required: "chưa chọn giới tính",
     },
     username: {
       required: "phải điền tên",
