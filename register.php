@@ -1,4 +1,4 @@
-<?php
+<?php session_start();
 require_once('connection.php');
 $errors = array();
 $error = '';
@@ -156,7 +156,8 @@ if (isset($_POST['submit'])) {
         $sql_insert = "INSERT INTO user(UserName, PhoneNumber, BirthDay, Address, Email, Password, Avata, Gender) VALUES('$name', '$phone', '$birthday', '$address', '$email', '$password', '$filenameavatar', $gender)";
         // + Thực thi truy vấn: UPDATE trả về boolean
         $is_insert = mysqli_query($connection, $sql_insert);
-        header('Location: profile.html');
+        $_SESSION['username'] = $name;
+        header('Location: profile.php');
         exit();
     }
 }
