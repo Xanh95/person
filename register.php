@@ -1,10 +1,12 @@
 <?php session_start();
 require_once('connection.php');
+if (isset($_SESSION['email']) || isset($_COOKIE['email'])) {
+    header('Location: login.php');
+}
 $errors = array();
 $error = '';
 $checked_male = '';
 $checked_female = '';
-print_r($_FILES);
 if (isset($_POST['submit'])) {
     $name = $_POST["username"];
     $phone = $_POST["phone"];
@@ -23,12 +25,10 @@ if (isset($_POST['submit'])) {
     // Kiểm tra tên
     if (empty($name)) {
         $errors["name"] = "Tên không được để trống";
-        var_dump($errors);
     } else if (strlen($name) < 4) {
         $errors["name"] = "Tên phải có ít nhất 4 ký tự";
     } else if ($count_checkusername > 0) {
         $errors["nameused"] = "Tên đã có người sử dụng";
-        var_dump($errors);
     }
 
     // Kiểm tra số điện thoại
@@ -41,13 +41,9 @@ if (isset($_POST['submit'])) {
     }
 
     // Kiểm tra ngày tháng năm sinh
+
     if (empty($birthday)) {
         $errors["birthday"] = "Ngày tháng năm sinh không được để trống";
-    } else {
-        $date_arr = explode('/', $birthday);
-        if (count($date_arr) != 3 || !checkdate($date_arr[0], $date_arr[1], $date_arr[2])) {
-            $errors["birthday"] = "Ngày tháng năm sinh không hợp lệ";
-        }
     }
 
     // Kiểm tra địa chỉ
@@ -156,7 +152,7 @@ if (isset($_POST['submit'])) {
         $sql_insert = "INSERT INTO user(UserName, PhoneNumber, BirthDay, Address, Email, Password, Avata, Gender) VALUES('$name', '$phone', '$birthday', '$address', '$email', '$password', '$filenameavatar', $gender)";
         // + Thực thi truy vấn: UPDATE trả về boolean
         $is_insert = mysqli_query($connection, $sql_insert);
-        $_SESSION['username'] = $name;
+        $_SESSION['email'] = $email;
         header('Location: profile.php');
         exit();
     }
@@ -200,7 +196,7 @@ if (isset($_POST['submit'])) {
                         <form id="register" method="post" enctype="multipart/form-data">
                             <h3>Đăng Ký</h3>
                             <div>
-                                <label for="name">Tên Đăng nhập của bạn:</label>
+                                <label for="name">Tên của bạn:</label>
                                 <input type="text" class="form-control" id="name" placeholder="Enter name" value="<?php echo isset($_POST['username']) ? $_POST['username'] : ''; ?>" name="username">
                                 <label id="name-error" class="error" for="name"><?php echo isset($errors["nameused"]) ? $errors["nameused"] : ''; ?></label>
 

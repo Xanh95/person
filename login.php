@@ -1,11 +1,47 @@
 <?php session_start();
 require_once('connection.php');
+if (isset($_COOKIE['email'])) {
+    //Tạo session để đánh dấu login thành công
+    $_SESSION['email'] = $_COOKIE['email'];
+    header('Location: profile.php');
+    exit();
+}
 $error = '';
 if (isset($_SESSION['error'])) {
     $error = $_SESSION['error'];
     unset($_SESSION['error']);
 }
 if (isset($_POST['login'])) {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    if (empty($email) || empty($password)) {
+        $error = 'phải nhập đầy đủ email và password';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = 'email không đúng định dạng';
+    }
+    if (empty($error)) {
+        $sql_login = "SELECT * FROM user WHERE Email = '$email' AND Password = '$password'";
+        $is_login = mysqli_query($connection, $sql_login);
+        if (mysqli_num_rows($is_login) > 0) {
+            $_SESSION['email'] = $email;
+            if (isset($_POST['remember'])) {
+                $_SESSION['success'] = 'Ghi nhớ đăng nhập thành công';
+
+                setcookie('email', $email, time() + 3600);
+            }
+        } else {
+            $error = 'sai email hoặc mật khẩu';
+        }
+    }
+}
+if (isset($_SESSION['email'])) {
+
+    header('Location: profile.php');
+    exit();
+}
+if (isset($_SESSION['success'])) {
+    $error = $_SESSION['success'];
+    unset($_SESSION['success']);
 }
 ?>
 <!DOCTYPE html>
@@ -43,7 +79,7 @@ if (isset($_POST['login'])) {
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12 col-xs-12 form bg-r">
-                        <form id="login">
+                        <form id="login" method="post" action="">
                             <h3>Đăng Nhập</h3>
                             <div>
                                 <label for="email">Email address</label>
@@ -59,6 +95,7 @@ if (isset($_POST['login'])) {
                                 <input type="checkbox" class="form-check-input" id="rememberMe" name="remember">
                                 <label class="form-check-label" for="rememberMe" id="remember">Ghi Nhớ Đăng Nhập
                                 </label>
+                                <a href="register.php">Đăng ký</a>
                             </div>
                             <button type="submit" class="btn btn-success btn-block my-3" name="login">Login</button>
                         </form>
