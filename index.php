@@ -4,32 +4,37 @@ $action = 1;
 $home = '';
 $person = '';
 $calo = '';
+$home_content = '';
+$person_content = '';
+$calo_content = '';
 if (isset($_COOKIE['email'])) {
     //Tạo session để đánh dấu login thành công
     $_SESSION['email'] = $_COOKIE['email'];
 }
-$email = $_SESSION['email'];
-$dataUserName = "SELECT * FROM user WHERE Email = '$email'";
-$pulldata = mysqli_query($connection, $dataUserName);
-$showdata = mysqli_fetch_assoc($pulldata);
+if (isset($_SESSION['email'])) {
+    $email = $_SESSION['email'];
+    $dataUserName = "SELECT * FROM user WHERE Email = '$email'";
+    $pulldata = mysqli_query($connection, $dataUserName);
+    $showdata = mysqli_fetch_assoc($pulldata);
 
-if (mysqli_num_rows($pulldata) > 0) {
+    if (mysqli_num_rows($pulldata) > 0) {
 
 
-    $name = $showdata["UserName"];
+        $name = $showdata["UserName"];
+    }
 }
 if (isset($_GET['action'])) {
     $action = $_GET['action'];
 }
 switch ($action) {
     case 0:
-        $home = 'active';
+        $home = 'active show';
         break;
     case 1:
-        $person = 'active';
+        $person = 'active show';
         break;
     case 2:
-        $calo = 'active';
+        $calo = 'active show';
         break;
 }
 ?>
@@ -40,21 +45,15 @@ switch ($action) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
     <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
-        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="js/index.js" defer></script>
     <title>Trang Chủ</title>
 </head>
@@ -83,8 +82,7 @@ switch ($action) {
         </div>
         <ul class="nav " id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link <?php echo $home; ?> border-tree" id="home-tab" data-toggle="tab" href="#home"
-                    role="tab" aria-controls="home" aria-selected="true">
+                <a class="nav-link <?php echo $home; ?> border-tree" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
                     <img src="img/day_leo.png" alt="" class="img-fluid">
                     <img src="img/day_leo_2.png" alt="" class="img-fluid">
                     <img src="img/day_leo.png" alt="" class="img-fluid">
@@ -92,16 +90,14 @@ switch ($action) {
                     Trang Chủ</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link <?php echo $person; ?> border-tree" id="profile-tab" data-toggle="tab"
-                    href="#profile" role="tab" aria-controls="profile" aria-selected="false">
+                <a class="nav-link <?php echo $person; ?> border-tree" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">
                     <img src="img/day_leo.png" alt="" class="img-fluid">
                     <img src="img/day_leo_2.png" alt="" class="img-fluid">
                     <img src="img/day_leo.png" alt="" class="img-fluid">
                     <img src="img/day_leo_2.png" alt="" class="img-fluid">Giới Thiệu Bản Thân</a>
             </li>
             <li class="nav-item ">
-                <a class="nav-link <?php echo $calo; ?> border-tree" id="calculate-tab" data-toggle="tab"
-                    href="#calculate" role="tab" aria-controls="calculate" aria-selected="false">
+                <a class="nav-link <?php echo $calo; ?> border-tree" id="calculate-tab" data-toggle="tab" href="#calculate" role="tab" aria-controls="calculate" aria-selected="false">
                     <img src="img/day_leo.png" alt="" class="img-fluid">
                     <img src="img/day_leo_2.png" alt="" class="img-fluid">
                     <img src="img/day_leo.png" alt="" class="img-fluid">
@@ -111,16 +107,14 @@ switch ($action) {
     </header>
     <main>
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade ml-5 content" id="home" role="tabpanel" aria-labelledby="home-tab">.ád.</div>
-            <div class="tab-pane fade show active ml-5 content" id="profile" role="tabpanel"
-                aria-labelledby="profile-tab">
+            <div class="tab-pane <?php echo $home; ?> fade ml-5 content" id="home" role="tabpanel" aria-labelledby="home-tab">.ád.</div>
+            <div class="tab-pane <?php echo $person; ?> fade  ml-5 content" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-9">
                             <h3>Xin Chào!!!</h3>
                             <h1>Tôi Là Tăng Xuân Anh, một người lập trình web</h1>
-                            <p>Tôi có kỹ năng về: <i class="fa-brands fa-html5" style="color: #DD4A28;"></i> HTML, <i
-                                    style="color: #1572B6;" class="fab fa-css3"></i>
+                            <p>Tôi có kỹ năng về: <i class="fa-brands fa-html5" style="color: #DD4A28;"></i> HTML, <i style="color: #1572B6;" class="fab fa-css3"></i>
                                 CSS, <i class="fab fa-js" style="color: yellow;"></i> JS, <i class="fab fa-php"></i> PHP
                             </p>
                             <p>Thư viện sử dụng: Bootstrap, Jquery, Fontawesome...</p>
@@ -134,8 +128,7 @@ switch ($action) {
                                 tôi thấy là web giúp ích và tiếp cận dễ dàng với rất nhiều người tại thời điểm hiện tại.
                                 Nên tôi đã đi học làm web để tạo ra nhiều giá trị hơn, tiếp cận được nhiều người hơn</p>
                             <div class="text-center">
-                                <a href="https://www.topcv.vn/xem-cv/X1RXUldZXloHAlAEA1FTAFFSU1MBWwNQVgIBAgda4f"
-                                    class="cv" target="_blank">Link CV</a>
+                                <a href="https://www.topcv.vn/xem-cv/X1RXUldZXloHAlAEA1FTAFFSU1MBWwNQVgIBAgda4f" class="cv" target="_blank">Link CV</a>
 
                             </div>
                         </div>
@@ -145,14 +138,11 @@ switch ($action) {
                             <a href="https://www.facebook.com/bach.t.vuong"> <i class="fab fa-facebook"></i>
                                 FaceBook</a>
                             <br>
-                            <a href="https://www.youtube.com/channel/UCdWP4f3gZTNPc4VzciBeNZg"> <i
-                                    class="fab fa-youtube"></i> Youtube</a>
+                            <a href="https://www.youtube.com/channel/UCdWP4f3gZTNPc4VzciBeNZg"> <i class="fab fa-youtube"></i> Youtube</a>
                             <br>
-                            <a href="https://discord.com/users/626596989131423774"> <i
-                                    class="fab fa-discord"></i>Discord</a>
+                            <a href="https://discord.com/users/626596989131423774"> <i class="fab fa-discord"></i>Discord</a>
                             <br>
-                            <a href="https://goo.gl/maps/F6v7WWxgv3KRiVKA6" target="_blank"> <i
-                                    class="fas fa-location-arrow"></i>Address</a>
+                            <a href="https://goo.gl/maps/F6v7WWxgv3KRiVKA6" target="_blank"> <i class="fas fa-location-arrow"></i>Address</a>
 
                         </div>
 
@@ -160,7 +150,7 @@ switch ($action) {
 
                 </div>
             </div>
-            <div class="tab-pane fade ml-5 content" id="calculate" role="tabpanel" aria-labelledby="calculate-tab">..d.
+            <div class="tab-pane <?php echo $calo; ?> fade ml-5 content" id="calculate" role="tabpanel" aria-labelledby="calculate-tab">..d.
             </div>
         </div>
 

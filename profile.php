@@ -18,6 +18,7 @@ if (mysqli_num_rows($pulldata) > 0) {
     $address = $showdata["Address"];
     $email = $showdata["Email"];
     $avatar = $showdata["Avata"];
+    $currentpass = $showdata['Password'];
     $gender = '';
 }
 $edit = false;
@@ -46,7 +47,8 @@ if (isset($_POST['save'])) {
     $phone = $_POST["phone"];
     $birthday = $_POST["birthday"];
     $address = $_POST["address"];
-
+    $currentpassword = $_POST["currentpassword"];
+    $currentpassword = htmlspecialchars($currentpassword);
     $password = $_POST["password"];
     $repassword = $_POST["repassword"];
     $checkusername = "SELECT * FROM user WHERE UserName = '$name'";
@@ -132,6 +134,12 @@ if (isset($_POST['save'])) {
     } else {
         $error = 'chưa tải ảnh lên thành công';
     }
+    // Kiểm tra mật khẩu hiện tại
+    if (empty($currentpassword)) {
+        $errors["currentpassword"] = "Mật khẩu hiện tại không được để trống";
+    } else if ($currentpassword !== $currentpass) {
+        $errors["currentpassword"] = "Mật khẩu chưa chính xác";
+    }
     // +Xử lý logic chính chỉ khi ko có lỗi:
 
     if (empty($error) && empty($errors)) {
@@ -213,79 +221,83 @@ switch ($showdata["Gender"]) {
     <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
     <script type="text/javascript" src="./js/editprofile.js" defer></script>
     <style>
-        #avatar {
-            margin-top: 5px;
-        }
+    #avatar {
+        margin-top: 5px;
+    }
 
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
 
-        /* Track */
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
 
-        /* Handle */
-        ::-webkit-scrollbar-thumb {
-            background: #888;
-        }
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+    }
 
-        /* Handle on hover */
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
 
-        body {
-            background: rgb(122, 238, 147)
-        }
+    body {
+        background: rgb(122, 238, 147)
+    }
 
-        .form-control:focus {
-            box-shadow: none;
-            border-color: #68c875
-        }
+    .form-control:focus {
+        box-shadow: none;
+        border-color: #68c875
+    }
 
-        .profile-button {
-            background: rgb(92, 247, 78);
-            box-shadow: none;
-            border: none
-        }
+    .profile-button {
+        background: rgb(92, 247, 78);
+        box-shadow: none;
+        border: none
+    }
 
-        .profile-button:hover {
-            background: green
-        }
+    .profile-button:hover {
+        background: green
+    }
 
-        .profile-button:focus {
-            background: green;
-            box-shadow: none
-        }
+    .profile-button:focus {
+        background: green;
+        box-shadow: none
+    }
 
-        .profile-button:active {
-            background: green;
-            box-shadow: none
-        }
+    .profile-button:active {
+        background: green;
+        box-shadow: none
+    }
 
-        .back:hover {
-            color: green;
-            cursor: pointer
-        }
+    .back:hover {
+        color: green;
+        cursor: pointer
+    }
 
-        .labels {
-            font-size: 11px
-        }
+    .labels {
+        font-size: 11px
+    }
 
-        .logout {
-            text-decoration: none;
-            color: white;
-        }
+    .logout {
+        text-decoration: none;
+        color: white;
+    }
 
-        .logout:hover {
-            color: white;
-        }
+    .logout:hover {
+        color: white;
+    }
 
-        .edit {
-            margin-bottom: 10px;
-        }
+    .edit {
+        margin-bottom: 10px;
+    }
+
+    .currentpassword {
+        margin-bottom: 10px;
+    }
     </style>
 </head>
 
@@ -297,16 +309,21 @@ switch ($showdata["Gender"]) {
                     <div class="d-flex flex-column align-items-center text-center p-3 py-5">
                         <img class="rounded-circle mt-5" width="150px" src="./useravata/<?php echo $avatar; ?>">
 
-                        <span class="font-weight-bold"><?php echo $name; ?></span><span class="text-black-50"><?php echo $email; ?></span><span> </span>
+                        <span class="font-weight-bold"><?php echo $name; ?></span><span
+                            class="text-black-50"><?php echo $email; ?></span><span> </span>
                     </div>
                     <h5 style="color: #68c875;"><?php echo isset($_SESSION['success']) ?  $_SESSION['success'] : ''; ?>
                     </h5>
                     <div class="edit text-center">
                         <?php if ($edit === true) : ?>
-                            <button type="submit" class="btn btn-primary profile-button logout" name="save">Save</button>
-                            <button type="submit" class="btn btn-primary profile-button logout" name="cancel">Cancel</button>
+                        <span>Mật khẩu hiện tại</span>
+                        <input type="password" class="form-control currentpassword" placeholder="mật khẩu hiện tại"
+                            name="currentpassword">
+                        <button type="submit" class="btn btn-primary profile-button logout" name="save">Save</button>
+                        <button type="submit" class="btn btn-primary profile-button logout"
+                            name="cancel">Cancel</button>
                         <?php else : ?>
-                            <button type="submit" class="btn btn-primary profile-button logout" name="edit">Edit</button>
+                        <button type="submit" class="btn btn-primary profile-button logout" name="edit">Edit</button>
                         <?php endif; ?>
 
 
@@ -358,7 +375,7 @@ switch ($showdata["Gender"]) {
                             </div>
                             
                             <div>
-                                <label for="password" class="label">Password</label>
+                                <label for="password" class="label">NewPassword</label>
                                 <input type="password" class="form-control" id="password" placeholder="Password"
                                     name="password">
                             </div>
@@ -392,7 +409,7 @@ switch ($showdata["Gender"]) {
                         <h5 style="color: red;">
                             <?php
                             foreach ($errors as $value) {
-                                echo $value;
+                                echo $value . "<br>";
                             }
                             ?>
                         </h5>
@@ -402,7 +419,8 @@ switch ($showdata["Gender"]) {
             </div>
         </div>
         </div>
-        <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js'></script>
+        <script type='text/javascript'
+            src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js'></script>
 
     </form>
 </body>
